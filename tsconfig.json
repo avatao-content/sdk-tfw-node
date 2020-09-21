@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "es2018",
+		"module": "commonjs",
+		"outDir": "out"
+	},
+	"include": ["src/*", "src/eventhandling/DeployEventHandler.ts"],
+	"exclude": ["node_modules"]
+}
