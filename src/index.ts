@@ -1,3 +1,3 @@
-import { ZMQConnector } from "./tfw/zmq/zmqConnector";
+import { SDK } from "./sdk";
 
-export const zmqConnector = new ZMQConnector();
+export const tfwsdk = new SDK();
