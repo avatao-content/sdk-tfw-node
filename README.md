@@ -1,4 +1,4 @@
-#### TFW SDK for Python developers ####
+#### TFW SDK for JavaScript developers ####
 
 ![GitHub](https://img.shields.io/github/license/avatao-content/sdk-tfw-node)
 
