@@ -17,17 +17,15 @@ class TFWUplinkConnector {
 
   async sendMessage(message: ZMQMessage): Promise<void> {
     message.scope = this._scope;
-    await this._sock.send(prepareZmqMessage(message));
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await this._sock.send([
+      Buffer.from(message.key),
+      Buffer.from(JSON.stringify(message)),
+    ]);
   }
 
   close(): void {
     this._sock.close();
   }
 }
-
-const prepareZmqMessage = (message: ZMQMessage) => {
-  return [Buffer.from(message.key), Buffer.from(JSON.stringify(message))];
-};
 
 export { TFWUplinkConnector };

@@ -26,8 +26,18 @@ class SDK {
     this._connector = new ZMQConnector();
   }
 
-  async start(): Promise<void> {
+  async start(messageCallbacks: CallbackDict): Promise<void> {
+    this._messageCallbacks = messageCallbacks;
     await this._connector.setup(this.handleMessage);
+  }
+
+  async bot_message(message: string): Promise<void> {
+    const payload = {
+      key: "message.send",
+      originator: "avataobot",
+      message: message,
+    };
+    this._connector.sendMessage(payload);
   }
 
   handleMessage(message: ZMQMessage): void {
