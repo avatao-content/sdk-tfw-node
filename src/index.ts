@@ -1,1 +1,3 @@
-export const greet = (name: string) => `Hello ${name}`;
+import { ZMQConnector } from "./tfw/zmq/zmqConnector";
+
+export const zmqConnector = new ZMQConnector();

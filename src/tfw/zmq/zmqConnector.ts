@@ -14,7 +14,7 @@ class ZMQConnector {
     this.downlink = new TFWDownlinkConnector(this.subAddr);
   }
 
-  close() {
+  close(): void {
     this.uplink.close();
     this.downlink.close();
   }

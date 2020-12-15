@@ -10,17 +10,17 @@ class TFWUplinkConnector {
     this.scope = "zmq";
   }
 
-  async setupConnection() {
+  async setupConnection(): Promise<void> {
     await this.sock.bind(this.addr);
   }
 
-  async sendMessage(message: JSON) {
+  async sendMessage(message: JSON): Promise<void> {
     message["scope"] = this.scope;
     await this.sock.send([message["key"], JSON.stringify(message)]);
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  close() {
+  close(): void {
     this.sock.close();
   }
 }

@@ -8,12 +8,12 @@ class TFWDownlinkConnector {
     this.addr = addr;
   }
 
-  setupConnection() {
+  setupConnection(): void {
     this.sock.connect(this.addr);
     this.sock.subscribe(""); // Subscribe to all messages
   }
 
-  async handleMessages() {
+  async handleMessages(): Promise<void> {
     for await (const [topic, msg] of this.sock) {
       console.log(
         "received a message related to:",
@@ -24,7 +24,7 @@ class TFWDownlinkConnector {
     }
   }
 
-  close() {
+  close(): void {
     this.sock.close();
   }
 }
