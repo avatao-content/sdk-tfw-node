@@ -6,10 +6,10 @@ test("ZMQConnector setup", () => {
   const connector = new ZMQConnector();
 
   expect(connector["_uplink"]["_addr"]).toEqual(
-    `tcp://localhost:${process.env["TFW_PUB_PORT"] || "7654"}`,
+    `tcp://127.0.0.1:${process.env["TFW_PUB_PORT"] || "8765"}`,
   );
   expect(connector["_downlink"]["_addr"]).toEqual(
-    `tcp://localhost:${process.env["TFW_PULL_PORT"] || "8765"}`,
+    `tcp://127.0.0.1:${process.env["TFW_PULL_PORT"] || "7654"}`,
   );
 });
 

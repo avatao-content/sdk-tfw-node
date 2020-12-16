@@ -4,23 +4,22 @@ import { ZMQMessage } from "../types";
 class TFWUplinkConnector {
   private _addr: string;
   private _scope: string;
-  private _sock = new zmq.Publisher();
+  private _sock: zmq.Push;
 
   constructor(addr: string) {
     this._addr = addr;
     this._scope = "zmq";
+    this._sock = new zmq.Push();
   }
 
-  async setupConnection(): Promise<void> {
-    await this._sock.bind(this._addr);
+  setupConnection(): void {
+    this._sock.connect(this._addr);
   }
 
   async sendMessage(message: ZMQMessage): Promise<void> {
     message.scope = this._scope;
-    await this._sock.send([
-      Buffer.from(message.key),
-      Buffer.from(JSON.stringify(message)),
-    ]);
+    console.log("[INFO] Sending message: " + JSON.stringify(message));
+    await this._sock.send([message.key, JSON.stringify(message)]);
   }
 
   close(): void {

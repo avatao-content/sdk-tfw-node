@@ -2,7 +2,7 @@ import { ZMQConnector } from "../zmq/zmqConnector";
 import { CallbackDict, ZMQMessage } from "../types";
 
 const CallbackValues = {
-  "messages.button.click": ["value"],
+  "message.button.click": ["value"],
   "ide.write": ["filename", "content"],
   "history.bash": ["command"],
 };
@@ -26,9 +26,10 @@ class SDK {
     this._connector = new ZMQConnector();
   }
 
-  async start(messageCallbacks: CallbackDict): Promise<void> {
+  start(messageCallbacks: CallbackDict): void {
     this._messageCallbacks = messageCallbacks;
-    await this._connector.setup(this.handleMessage);
+    this._connector.setup(this.handleMessage);
+    console.log("[INFO] SDK started");
   }
 
   async bot_message(message: string): Promise<void> {
@@ -40,7 +41,8 @@ class SDK {
     this._connector.sendMessage(payload);
   }
 
-  handleMessage(message: ZMQMessage): void {
+  handleMessage = (message: ZMQMessage): void => {
+    console.log("[INFO] Incoming message: " + message.toString());
     const key = message.key;
     try {
       if (key == "fsm.update") {
@@ -49,7 +51,7 @@ class SDK {
         let success = false;
         try {
           // A response is always required, have to handle the error here
-          success = this._messageCallbacks.key(this.fsmState);
+          success = this._messageCallbacks[key](this.fsmState);
         } catch (error) {
           console.log(`[ERROR] ${key}: ${error.toString()}`);
         }
@@ -58,7 +60,7 @@ class SDK {
         this._connector.sendMessage(response);
       } else {
         if (key in CallbackValues) {
-          this._messageCallbacks.key(
+          this._messageCallbacks[key](
             this.fsmState,
             ...getValues(CallbackValues[key], message),
           );
@@ -69,7 +71,7 @@ class SDK {
     } catch (error) {
       console.log(`[ERROR] ${key}: ${error.toString()}`);
     }
-  }
+  };
 }
 
 export { SDK };

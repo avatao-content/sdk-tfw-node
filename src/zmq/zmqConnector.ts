@@ -9,16 +9,17 @@ class ZMQConnector {
   private _downlink: TFWDownlinkConnector;
 
   constructor() {
-    this.pubAddr = `tcp://localhost:${process.env["TFW_PUB_PORT"] || "7654"}`;
-    this.subAddr = `tcp://localhost:${process.env["TFW_PULL_PORT"] || "8765"}`;
+    this.subAddr = `tcp://127.0.0.1:${process.env["TFW_PUB_PORT"] || "7654"}`;
+    this.pubAddr = `tcp://127.0.0.1:${process.env["TFW_PULL_PORT"] || "8765"}`;
     this._uplink = new TFWUplinkConnector(this.pubAddr);
     this._downlink = new TFWDownlinkConnector(this.subAddr);
   }
 
-  async setup(onMessageCallback: CallbackFunction): Promise<void> {
-    await this._uplink.setupConnection();
+  setup(onMessageCallback: CallbackFunction): void {
+    this._uplink.setupConnection();
     this._downlink.setupConnection();
     this._downlink.start(onMessageCallback);
+    console.log("[INFO] ZMQConnector setup finished");
   }
 
   async sendMessage(message: ZMQMessage): Promise<void> {

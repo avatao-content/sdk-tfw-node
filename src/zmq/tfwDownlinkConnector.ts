@@ -3,10 +3,11 @@ import { CallbackFunction } from "../types";
 
 class TFWDownlinkConnector {
   private _addr: string;
-  private _sock = new zmq.Subscriber();
+  private _sock: zmq.Subscriber;
 
   constructor(addr: string) {
     this._addr = addr;
+    this._sock = new zmq.Subscriber();
   }
 
   setupConnection(): void {
@@ -19,16 +20,9 @@ class TFWDownlinkConnector {
   }
 
   async start(callback: CallbackFunction): Promise<void> {
-    for await (const [topic, msg] of this._sock) {
+    for await (const [, msg] of this._sock) {
       const message = JSON.parse(msg.toString());
       callback(message);
-
-      console.log(
-        "received a message related to:",
-        topic,
-        "containing message:",
-        msg,
-      );
     }
   }
 }
