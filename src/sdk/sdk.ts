@@ -59,11 +59,16 @@ class SDK {
         if (!success) response["error"] = true;
         this._connector.sendMessage(response);
       } else {
-        if (key in CallbackValues) {
-          this._messageCallbacks[key](
-            this.fsmState,
-            ...getValues(CallbackValues[key], message),
-          );
+        if (key in this._messageCallbacks) {
+          if (key in CallbackValues) {
+            this._messageCallbacks[key](
+              this.fsmState,
+              ...getValues(CallbackValues[key], message),
+              message,
+            );
+          } else {
+            this._messageCallbacks[key](this.fsmState, message);
+          }
         } else {
           console.log(`[INFO] callback not found for ${key}`);
         }
