@@ -1,5 +1,11 @@
 import { ZMQConnector } from "../zmq/zmqConnector";
-import { CallbackDict, ZMQMessage } from "../types";
+import {
+  CallbackDict,
+  DeployButtonText,
+  LayoutName,
+  ZMQMessage,
+} from "../types";
+import * as messageUtils from "./messages";
 
 const CallbackValues = {
   "message.button.click": ["value"],
@@ -32,22 +38,15 @@ class SDK {
     console.log("[INFO] SDK started");
   }
 
-  async bot_message(message: string): Promise<void> {
-    const payload = {
-      key: "message.send",
-      originator: "avataobot",
-      message: message,
-    };
-    this._connector.sendMessage(payload);
-  }
-
   handleMessage = (message: ZMQMessage): void => {
     console.log("[INFO] Incoming message: " + message.toString());
     const key = message.key;
     try {
-      if (key == "fsm.update") {
+      if (key == "fsm.update" && "current_state" in message) {
         this.fsmState = parseInt(message.current_state);
-      } else if (key == "deploy.start") {
+      }
+
+      if (key == "deploy.start") {
         let success = false;
         try {
           // A response is always required, have to handle the error here
@@ -77,6 +76,170 @@ class SDK {
       console.log(`[ERROR] ${key}: ${error.toString()}`);
     }
   };
+
+  async sendChatMessage(message: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareChatBotSendMessage(message),
+    );
+  }
+
+  async queueChatMessages(messages: string[]): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareChatBotQueueMessage(messages),
+    );
+  }
+
+  async setAskReloadSite(needConfirmation: boolean): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareAskReloadSiteMessage(needConfirmation),
+    );
+  }
+
+  async setDocumentTitle(title: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetDocumentTitleMessage(title),
+    );
+  }
+
+  async setEnabledLayouts(layouts: LayoutName[]): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetEnabledLayoutsMessage(layouts),
+    );
+  }
+
+  async switchLayout(layout: LayoutName): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareSetLayoutMessage(layout));
+  }
+
+  async setHideBotMessages(value: boolean): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareHideBotMessagesMessage(value),
+    );
+  }
+
+  async setIframeUrl(url: string): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareSetIframeUrlMessage(url));
+  }
+
+  async showIframeUrlBar(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareShowIframeUrlBarMessage(true),
+    );
+  }
+
+  async hideIframeUrlBar(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareShowIframeUrlBarMessage(false),
+    );
+  }
+
+  async switchToConsole(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetTerminalMenuItemMessage("console"),
+    );
+  }
+
+  async switchToTerminal(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetTerminalMenuItemMessage("terminal"),
+    );
+  }
+
+  async stepFsm(state: string | number, force: boolean = false): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareStepFsmMessage(state, force),
+    );
+  }
+
+  async askFsmState(): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareAskFsmStateMessage());
+  }
+
+  async showDeployButton(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareShowDeploybuttonMessage(true),
+    );
+  }
+
+  async hideDeploybutton(): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareShowDeploybuttonMessage(false),
+    );
+  }
+
+  async setDeployButtonText(buttonTexts: DeployButtonText): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetDeployButtonTextMessage(buttonTexts),
+    );
+  }
+
+  async setAutoSaveInterval(interval: number): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareSetIdeAutoSaveIntervalMessage(interval),
+    );
+  }
+
+  async ideSelectFile(fileName: string, patterns?: string[]): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareIdeReadFileAndPatternMessage(fileName, patterns),
+    );
+  }
+
+  async ideWriteFile(fileName: string, content: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareIdeWriteFileMessage(fileName, content),
+    );
+  }
+
+  async ideReload(): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareIdeReloadMessage());
+  }
+
+  async startProcess(processName: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareStartProcessMessage(processName),
+    );
+  }
+
+  async restartProcess(processName: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareRestartProcessMessage(processName),
+    );
+  }
+
+  async stopProcess(processName: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareStopProcessMessage(processName),
+    );
+  }
+
+  async startDeploy(): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareStartDeployMessage());
+  }
+
+  async finishDeploy(errorMessage?: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareFinishDeployMessage(errorMessage),
+    );
+  }
+
+  async readConsole(): Promise<void> {
+    // This won't work since we are not listening for the response
+    // TODO ¯\_( ͡° ͜ʖ ͡°)_/¯
+    this._connector.sendMessage(messageUtils.prepareConsoleReadMessage());
+  }
+
+  async writeToConsole(content: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareConsoleWriteMessage(content),
+    );
+  }
+
+  async writeToTerminal(command: string): Promise<void> {
+    this._connector.sendMessage(
+      messageUtils.prepareTerminalWriteMessage(command),
+    );
+  }
 }
 
 export { SDK };

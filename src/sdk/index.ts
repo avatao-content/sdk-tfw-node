@@ -1,3 +1,1 @@
-import { SDK } from "./sdk";
-
-export { SDK };
+export { SDK } from "./sdk";
