@@ -9,7 +9,6 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "build": "tsc",
-    "postinstall": "tsc --build tsconfig.json",
     "watch": "tsc -w",
     "start": "npm link && nodemon",
     "semantic-release": "semantic-release",
