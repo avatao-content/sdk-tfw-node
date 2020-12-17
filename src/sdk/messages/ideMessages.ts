@@ -31,7 +31,7 @@ export function prepareIdeReadFileAndPatternMessage(
   fileName: string,
   patterns?: string[],
 ): ZMQMessage {
-  var message = {
+  const message = {
     key: "ide.read",
     filename: fileName,
   };

@@ -2,7 +2,7 @@ import { ZMQMessage } from "../../types";
 
 export function prepareStepFsmMessage(
   state: string | number,
-  force: boolean = false,
+  force = false,
 ): ZMQMessage {
   return {
     key: "fsm.trigger",

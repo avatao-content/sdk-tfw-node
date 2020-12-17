@@ -28,7 +28,7 @@ export function prepareStartDeployMessage(): ZMQMessage {
 }
 
 export function prepareFinishDeployMessage(error?: string): ZMQMessage {
-  var message: ZMQMessage = {
+  const message: ZMQMessage = {
     key: "deploy.finish",
   };
   if (error && error !== "") message["error"] = error;

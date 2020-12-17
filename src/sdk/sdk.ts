@@ -145,7 +145,7 @@ class SDK {
     );
   }
 
-  async stepFsm(state: string | number, force: boolean = false): Promise<void> {
+  async stepFsm(state: string | number, force = false): Promise<void> {
     this._connector.sendMessage(
       messageUtils.prepareStepFsmMessage(state, force),
     );

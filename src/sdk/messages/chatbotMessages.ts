@@ -15,7 +15,7 @@ export function prepareChatBotQueueMessage(
   messageContents: string[],
   originator?: string,
 ): ZMQMessage {
-  var messages: ZMQMessage[] = [];
+  const messages: ZMQMessage[] = [];
   messageContents.forEach((content) => {
     messages.push({
       originator: originator ? originator : "avataobot",
@@ -23,10 +23,9 @@ export function prepareChatBotQueueMessage(
     });
   });
 
-  var message = {
+  return {
     key: "message.queue",
     originator: originator ? originator : "avataobot",
     messages: messages,
   };
-  return message;
 }
