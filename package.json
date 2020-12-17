@@ -1,5 +1,5 @@
 {
-  "name": "sdk-tfw-node",
+  "name": "tfwsdk",
   "version": "0.0.0-development",
   "description": "This package is part of our next-gen Tutorial Framework (which just an additional abstraction layer). The purpose of the project is to decrease the learning curve of creating tutorial exercises.",
   "main": "dist/index.js",
@@ -51,7 +51,6 @@
     "eslint-plugin-prettier": "^3.3.0",
     "husky": "^4.3.6",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.6",
     "prettier": "^2.2.1",
     "semantic-release": "^17.3.0",
     "ts-jest": "^26.4.4",
@@ -61,7 +60,6 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "zeromq": "^6.0.0-beta.5",
-    "typescript": "^4.1.3"
+    "zeromq": "^6.0.0-beta.5"
   }
 }
