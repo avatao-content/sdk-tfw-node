@@ -34,7 +34,7 @@ class SDK {
 
   start(messageCallbacks: CallbackDict): void {
     this._messageCallbacks = messageCallbacks;
-    this._connector.setup(this.handleMessage);
+    this._connector.startMessageHandling(this.handleMessage);
     console.log("[INFO] SDK started");
   }
 
