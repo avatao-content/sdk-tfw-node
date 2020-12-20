@@ -8,7 +8,7 @@ class ComplexCustomDeployHandler extends EventHandlerBase {
     super(["deploy.start"]);
   }
 
-  handleMessage(message: ZMQMessage) {
+  handleMessage(message: ZMQMessage): void {
     let errorMessage = "";
     // Do some tests after process restart...
     const error = Math.random() < 0.5;

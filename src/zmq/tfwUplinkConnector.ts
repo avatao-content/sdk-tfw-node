@@ -1,4 +1,5 @@
 import * as zmq from "zeromq";
+import { log } from "../sdk/utils";
 import { ZMQMessage } from "../types";
 
 class TFWUplinkConnector {
@@ -18,7 +19,7 @@ class TFWUplinkConnector {
 
   async sendMessage(message: ZMQMessage): Promise<void> {
     if (!("scope" in message)) message.scope = this._defaultScope;
-    console.log("[INFO] Sending message: " + JSON.stringify(message));
+    log("[INFO] Sending message: " + JSON.stringify(message));
     await this._sock.send([message.key, JSON.stringify(message)]);
   }
 

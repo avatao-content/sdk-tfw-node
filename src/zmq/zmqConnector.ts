@@ -1,6 +1,7 @@
 import { TFWDownlinkConnector } from "./tfwDownlinkConnector";
 import { TFWUplinkConnector } from "./tfwUplinkConnector";
 import { ZMQMessage, CallbackFunction } from "../types";
+import { log } from "../sdk/utils";
 
 class ZMQConnector {
   pubAddr: string;
@@ -22,7 +23,7 @@ class ZMQConnector {
     onMessageCallback: CallbackFunction,
   ): Promise<void> {
     this._downlink.start(onMessageCallback);
-    console.log("[INFO] ZMQConnector setup finished");
+    log("[INFO] ZMQConnector setup finished");
   }
 
   async sendMessage(message: ZMQMessage): Promise<void> {
@@ -32,7 +33,7 @@ class ZMQConnector {
   close(): void {
     this._uplink.close();
     this._downlink.close();
-    console.log("[INFO] ZMQConnector connections closed");
+    log("[INFO] ZMQConnector connections closed");
   }
 }
 

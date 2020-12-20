@@ -7,7 +7,7 @@ import {
 } from "../types";
 import * as messageUtils from "./messages";
 import { EventHandlerBase } from "./eventHandlers";
-import { Event } from "zeromq";
+import { log } from "./utils";
 
 const CallbackValues = {
   "message.button.click": ["value"],
@@ -29,7 +29,6 @@ class SDK {
   private _connector: ZMQConnector;
   private _messageCallbacks: CallbackDict;
   private _eventHandlers: EventHandlerBase[];
-  private _eventHandlerKeys: string[];
 
   constructor() {
     this.fsmState = 0;
@@ -37,7 +36,6 @@ class SDK {
     this._messageCallbacks = {};
     this._connector = new ZMQConnector();
     this._eventHandlers = [];
-    this._eventHandlerKeys = [];
   }
 
   start(messageCallbacks: CallbackDict): void {
@@ -48,7 +46,7 @@ class SDK {
       eh.start();
     });
     this.started = true;
-    console.log("[INFO] SDK started");
+    log("[INFO] SDK started");
   }
 
   stop() {
@@ -66,7 +64,7 @@ class SDK {
   }
 
   handleMessage = (message: ZMQMessage): void => {
-    console.log("[INFO] Incoming message: " + JSON.stringify(message));
+    log("[INFO] Incoming message: " + JSON.stringify(message));
     const key = message.key;
     try {
       if (key == "fsm.update" && "current_state" in message) {
@@ -74,7 +72,7 @@ class SDK {
       }
 
       if (Object.keys(this._messageCallbacks).length === 0) {
-        console.log("[INFO] No callbacks available for message handling");
+        log("[INFO] No callbacks available for message handling");
       } else if (key in this._messageCallbacks) {
         if (key in CallbackValues) {
           this._messageCallbacks[key](
@@ -86,10 +84,10 @@ class SDK {
           this._messageCallbacks[key](this.fsmState, message);
         }
       } else {
-        console.log(`[INFO] callback not found for ${key}`);
+        log(`[INFO] callback not found for ${key}`);
       }
     } catch (error) {
-      console.log(`[ERROR] ${key}: ${error.toString()}`);
+      log(`[ERROR] ${key}: ${error.toString()}`);
     }
   };
 

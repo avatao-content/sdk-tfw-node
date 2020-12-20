@@ -1,5 +1,6 @@
 import { ZMQMessage } from "../../types";
 import { ZMQConnector } from "../../zmq/zmqConnector";
+import { log } from "../utils";
 
 export abstract class EventHandlerBase {
   private _connector: ZMQConnector;
@@ -18,12 +19,12 @@ export abstract class EventHandlerBase {
 
   start(): void {
     this._connector.startMessageHandling(this.messageFilter);
-    console.log(`[INFO] Eventhandler ${this.constructor.name} has started`);
+    log(`[INFO] Eventhandler ${this.constructor.name} has started`);
   }
 
   stop(): void {
     this._connector.close();
-    console.log(`[INFO] Eventhandler ${this.constructor.name} has stopped`);
+    log(`[INFO] Eventhandler ${this.constructor.name} has stopped`);
   }
 
   async sendMessage(message: ZMQMessage) {

@@ -6,6 +6,7 @@ import {
   prepareFinishDeployMessage,
   prepareRestartProcessMessage,
 } from "../messages";
+import { log } from "../utils";
 
 class ComplexCustomDeployHandler extends EventHandlerBase {
   // Deploy handler example if a process restart if needed
@@ -22,13 +23,11 @@ class ComplexCustomDeployHandler extends EventHandlerBase {
     this._processName = "webservice";
   }
 
-  handleMessage(message: ZMQMessage) {
+  handleMessage(message: ZMQMessage): void {
     try {
       this._commands[message.key](message);
     } catch (error) {
-      console.log(
-        `[ERROR] Invalid message received ${JSON.stringify(message)}`,
-      );
+      log(`[ERROR] Invalid message received ${JSON.stringify(message)}`);
     }
   }
 
