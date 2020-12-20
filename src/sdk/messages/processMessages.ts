@@ -34,3 +34,15 @@ export function prepareFinishDeployMessage(error?: string): ZMQMessage {
   if (error && error !== "") message["error"] = error;
   return message;
 }
+
+export function prepareStartProcessLogMessage(): ZMQMessage {
+  return {
+    key: "process.log.start",
+  };
+}
+
+export function prepareStopProcessLogMessage(): ZMQMessage {
+  return {
+    key: "process.log.stop",
+  };
+}

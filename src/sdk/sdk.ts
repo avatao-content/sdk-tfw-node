@@ -229,6 +229,14 @@ class SDK {
     );
   }
 
+  async startProcessLog(): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareStartProcessLogMessage());
+  }
+
+  async stopProcessLog(): Promise<void> {
+    this._connector.sendMessage(messageUtils.prepareStopProcessLogMessage());
+  }
+
   async startDeploy(): Promise<void> {
     this._connector.sendMessage(messageUtils.prepareStartDeployMessage());
   }

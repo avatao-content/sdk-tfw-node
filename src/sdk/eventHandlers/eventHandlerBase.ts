@@ -26,5 +26,9 @@ export abstract class EventHandlerBase {
     console.log(`[INFO] Eventhandler ${this.constructor.name} has stopped`);
   }
 
+  async sendMessage(message: ZMQMessage) {
+    this._connector.sendMessage(message);
+  }
+
   abstract handleMessage(message: ZMQMessage): any;
 }
