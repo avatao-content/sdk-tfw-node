@@ -29,6 +29,7 @@ class ZMQConnector {
   close(): void {
     this._uplink.close();
     this._downlink.close();
+    console.log("[INFO] ZMQConnector connections closed");
   }
 }
 

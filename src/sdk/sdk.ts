@@ -39,14 +39,16 @@ class SDK {
   }
 
   handleMessage = (message: ZMQMessage): void => {
-    console.log("[INFO] Incoming message: " + message.toString());
+    console.log("[INFO] Incoming message: " + JSON.stringify(message));
     const key = message.key;
     try {
       if (key == "fsm.update" && "current_state" in message) {
         this.fsmState = parseInt(message.current_state);
       }
 
-      if (key == "deploy.start") {
+      if (Object.keys(this._messageCallbacks).length === 0) {
+        console.log("[INFO] No callbacks available for message handling");
+      } else if (key == "deploy.start") {
         let success = false;
         try {
           // A response is always required, have to handle the error here
