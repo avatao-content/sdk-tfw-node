@@ -3,15 +3,15 @@ import { ZMQConnector } from "../../zmq/zmqConnector";
 
 export abstract class EventHandlerBase {
   private _connector: ZMQConnector;
-  private _key: string;
+  keys: string[];
 
-  constructor(key: string) {
+  constructor(keys: string[]) {
     this._connector = new ZMQConnector();
-    this._key = key;
+    this.keys = keys;
   }
 
   private messageFilter = (message: ZMQMessage): void => {
-    if (message.key.normalize() === this._key.normalize()) {
+    if (this.keys.includes(message.key)) {
       this.handleMessage(message);
     }
   };
@@ -19,6 +19,11 @@ export abstract class EventHandlerBase {
   start(): void {
     this._connector.startMessageHandling(this.messageFilter);
     console.log(`[INFO] Eventhandler ${this.constructor.name} has started`);
+  }
+
+  stop(): void {
+    this._connector.close();
+    console.log(`[INFO] Eventhandler ${this.constructor.name} has stopped`);
   }
 
   abstract handleMessage(message: ZMQMessage): any;

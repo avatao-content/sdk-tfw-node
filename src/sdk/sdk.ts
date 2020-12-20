@@ -25,15 +25,19 @@ const getValues = (keys: string[], message: ZMQMessage): string[] => {
 
 class SDK {
   fsmState: number;
+  started: boolean;
   private _connector: ZMQConnector;
   private _messageCallbacks: CallbackDict;
   private _eventHandlers: EventHandlerBase[];
+  private _eventHandlerKeys: string[];
 
   constructor() {
     this.fsmState = 0;
+    this.started = false;
     this._messageCallbacks = {};
     this._connector = new ZMQConnector();
     this._eventHandlers = [];
+    this._eventHandlerKeys = [];
   }
 
   start(messageCallbacks: CallbackDict): void {
@@ -43,11 +47,22 @@ class SDK {
       // Default eventhandlers
       eh.start();
     });
+    this.started = true;
     console.log("[INFO] SDK started");
+  }
+
+  stop() {
+    this._connector.close();
+    this._eventHandlers.forEach((eh) => {
+      eh.stop();
+    });
   }
 
   subscribeEventHandler(eventHandler: EventHandlerBase): void {
     this._eventHandlers.push(eventHandler);
+    if (this.started) {
+      eventHandler.start(); // Start eventhandlers after the SDK started
+    }
   }
 
   handleMessage = (message: ZMQMessage): void => {
@@ -60,31 +75,18 @@ class SDK {
 
       if (Object.keys(this._messageCallbacks).length === 0) {
         console.log("[INFO] No callbacks available for message handling");
-      } else if (key == "deploy.start") {
-        let success = false;
-        try {
-          // A response is always required, have to handle the error here
-          success = this._messageCallbacks[key](this.fsmState);
-        } catch (error) {
-          console.log(`[ERROR] ${key}: ${error.toString()}`);
-        }
-        const response = { key: "deploy.finish" };
-        if (!success) response["error"] = true;
-        this._connector.sendMessage(response);
-      } else {
-        if (key in this._messageCallbacks) {
-          if (key in CallbackValues) {
-            this._messageCallbacks[key](
-              this.fsmState,
-              ...getValues(CallbackValues[key], message),
-              message,
-            );
-          } else {
-            this._messageCallbacks[key](this.fsmState, message);
-          }
+      } else if (key in this._messageCallbacks) {
+        if (key in CallbackValues) {
+          this._messageCallbacks[key](
+            this.fsmState,
+            ...getValues(CallbackValues[key], message),
+            message,
+          );
         } else {
-          console.log(`[INFO] callback not found for ${key}`);
+          this._messageCallbacks[key](this.fsmState, message);
         }
+      } else {
+        console.log(`[INFO] callback not found for ${key}`);
       }
     } catch (error) {
       console.log(`[ERROR] ${key}: ${error.toString()}`);
