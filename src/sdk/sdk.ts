@@ -6,6 +6,8 @@ import {
   ZMQMessage,
 } from "../types";
 import * as messageUtils from "./messages";
+import { EventHandlerBase } from "./eventHandlers";
+import { Event } from "zeromq";
 
 const CallbackValues = {
   "message.button.click": ["value"],
@@ -25,17 +27,27 @@ class SDK {
   fsmState: number;
   private _connector: ZMQConnector;
   private _messageCallbacks: CallbackDict;
+  private _eventHandlers: EventHandlerBase[];
 
   constructor() {
     this.fsmState = 0;
     this._messageCallbacks = {};
     this._connector = new ZMQConnector();
+    this._eventHandlers = [];
   }
 
   start(messageCallbacks: CallbackDict): void {
     this._messageCallbacks = messageCallbacks;
     this._connector.startMessageHandling(this.handleMessage);
+    this._eventHandlers.forEach((eh) => {
+      // Default eventhandlers
+      eh.start();
+    });
     console.log("[INFO] SDK started");
+  }
+
+  subscribeEventHandler(eventHandler: EventHandlerBase): void {
+    this._eventHandlers.push(eventHandler);
   }
 
   handleMessage = (message: ZMQMessage): void => {
