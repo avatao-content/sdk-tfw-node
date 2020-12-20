@@ -8,7 +8,7 @@ import {
 } from "../messages";
 import { log } from "../utils";
 
-class ComplexCustomDeployHandler extends EventHandlerBase {
+export class ComplexCustomDeployHandler extends EventHandlerBase {
   // Deploy handler example if a process restart if needed
   // E.g. testing server endpoints, etc.
   private _commands: Record<string, any>;

@@ -10,7 +10,7 @@
     "test:watch": "jest --watchAll",
     "build": "tsc",
     "watch": "tsc -w",
-    "start": "npm link && nodemon",
+    "start": "npm link",
     "semantic-release": "semantic-release",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },

@@ -6,7 +6,8 @@ import {
   ZMQMessage,
 } from "../types";
 import * as messageUtils from "./messages";
-import { EventHandlerBase } from "./eventHandlers";
+import { EventHandlerBase } from "./eventHandlers/eventHandlerBase";
+import { SdkStateUpdateHandler } from "./eventHandlers/sdkStateUpdateHandler";
 import { log } from "./utils";
 
 const CallbackValues = {
@@ -23,7 +24,7 @@ const getValues = (keys: string[], message: ZMQMessage): string[] => {
   return values;
 };
 
-class SDK {
+export class SDK {
   fsmState: number;
   started: boolean;
   private _connector: ZMQConnector;
@@ -36,15 +37,15 @@ class SDK {
     this._messageCallbacks = {};
     this._connector = new ZMQConnector();
     this._eventHandlers = [];
+
+    this.subscribeEventHandler(new SdkStateUpdateHandler(this));
+    this.startEventHandlers();
   }
 
   start(messageCallbacks: CallbackDict): void {
     this._messageCallbacks = messageCallbacks;
     this._connector.startMessageHandling(this.handleMessage);
-    this._eventHandlers.forEach((eh) => {
-      // Default eventhandlers
-      eh.start();
-    });
+    this.startEventHandlers();
     this.started = true;
     log("[INFO] SDK started");
   }
@@ -53,6 +54,12 @@ class SDK {
     this._connector.close();
     this._eventHandlers.forEach((eh) => {
       eh.stop();
+    });
+  }
+
+  private startEventHandlers(): void {
+    this._eventHandlers.forEach((eh) => {
+      if (!eh.started) eh.start();
     });
   }
 
@@ -67,10 +74,6 @@ class SDK {
     log("[INFO] Incoming message: " + JSON.stringify(message));
     const key = message.key;
     try {
-      if (key == "fsm.update" && "current_state" in message) {
-        this.fsmState = parseInt(message.current_state);
-      }
-
       if (Object.keys(this._messageCallbacks).length === 0) {
         log("[INFO] No callbacks available for message handling");
       } else if (key in this._messageCallbacks) {
@@ -263,5 +266,3 @@ class SDK {
     );
   }
 }
-
-export { SDK };

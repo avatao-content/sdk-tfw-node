@@ -5,10 +5,12 @@ import { log } from "../utils";
 export abstract class EventHandlerBase {
   private _connector: ZMQConnector;
   keys: string[];
+  started: boolean;
 
   constructor(keys: string[]) {
     this._connector = new ZMQConnector();
     this.keys = keys;
+    this.started = false;
   }
 
   private messageFilter = (message: ZMQMessage): void => {
@@ -19,6 +21,7 @@ export abstract class EventHandlerBase {
 
   start(): void {
     this._connector.startMessageHandling(this.messageFilter);
+    this.started = true;
     log(`[INFO] Eventhandler ${this.constructor.name} has started`);
   }
 
