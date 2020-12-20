@@ -49,7 +49,7 @@ class SDK {
     log("[INFO] SDK started");
   }
 
-  stop() {
+  stop(): void {
     this._connector.close();
     this._eventHandlers.forEach((eh) => {
       eh.stop();
