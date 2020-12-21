@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/avatao-content/sdk-tfw-node/compare/v1.0.1...v1.0.2) (2020-12-21)
+
+
+### Bug Fixes
+
+* minor fix in ConsoleReadHandler ([ca08514](https://github.com/avatao-content/sdk-tfw-node/commit/ca08514fedee0baaed5525400dd27a8f69ddc88e))
+* sdk.readConsole works with a hacky solution ([0028806](https://github.com/avatao-content/sdk-tfw-node/commit/00288064f5f2cfc5b1870c7896dbee8965bc2bb2))
+
 ## [1.0.1](https://github.com/avatao-content/sdk-tfw-node/compare/v1.0.0...v1.0.1) (2020-12-21)
 
 
