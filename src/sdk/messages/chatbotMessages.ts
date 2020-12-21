@@ -22,7 +22,6 @@ export function prepareChatBotQueueMessage(
       message: content,
     });
   });
-
   return {
     key: "message.queue",
     originator: originator ? originator : "avataobot",

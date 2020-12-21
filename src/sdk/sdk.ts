@@ -8,6 +8,7 @@ import {
 import * as messageUtils from "./messages";
 import { EventHandlerBase } from "./eventHandlers/eventHandlerBase";
 import { SdkStateUpdateHandler } from "./eventHandlers/sdkStateUpdateHandler";
+import { ConsoleReadHandler } from "./eventHandlers/consoleReadHandler";
 import { log } from "./utils";
 
 const CallbackValues = {
@@ -248,10 +249,14 @@ export class SDK {
     );
   }
 
-  async readConsole(): Promise<void> {
-    // This won't work since we are not listening for the response
-    // TODO ¯\_( ͡° ͜ʖ ͡°)_/¯
+  async readConsole(): Promise<string> {
+    // Hacky solution with a custom event handler
+    const consoleReadHandler = new ConsoleReadHandler();
+    consoleReadHandler.start();
     this._connector.sendMessage(messageUtils.prepareConsoleReadMessage());
+    const content = await consoleReadHandler.waitForConsoleContent();
+    consoleReadHandler.stop();
+    return content;
   }
 
   async writeToConsole(content: string): Promise<void> {
