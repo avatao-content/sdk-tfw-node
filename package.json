@@ -17,6 +17,9 @@
   "repository": {
     "url": "https://github.com/avatao-content/sdk-tfw-node"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "TFW",
     "SDK"
