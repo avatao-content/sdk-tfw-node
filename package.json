@@ -15,8 +15,7 @@
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "repository": {
-    "type": "git",
-    "url": "https://github.com/avatao-content/sdk-tfw-node.git"
+    "url": "https://github.com/avatao-content/sdk-tfw-node"
   },
   "keywords": [
     "TFW",
