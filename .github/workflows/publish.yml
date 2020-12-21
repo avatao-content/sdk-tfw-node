@@ -9,10 +9,10 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 12
       - run: npm ci
@@ -24,10 +24,11 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v1
+          persist-credentials: false
+      - uses: actions/setup-node@v2
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
@@ -36,7 +37,7 @@ jobs:
       - run: npm run semantic-release
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-          GH_TOKEN: ${{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           CI: true
   # Uncomment this for a direct publish to npm
   # build-and-publish-npm:
