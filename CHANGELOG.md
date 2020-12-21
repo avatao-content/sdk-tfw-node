@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/avatao-content/sdk-tfw-node/compare/v1.0.0...v1.0.1) (2020-12-21)
+
+
+### Bug Fixes
+
+* modified comments ([1f3949d](https://github.com/avatao-content/sdk-tfw-node/commit/1f3949d729910bad7973576cd18ecc5a946285a8))
+
 # 1.0.0 (2020-12-21)
 
 
