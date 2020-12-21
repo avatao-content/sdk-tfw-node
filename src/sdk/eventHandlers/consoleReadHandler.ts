@@ -11,7 +11,7 @@ export class ConsoleReadHandler extends EventHandlerBase {
 
   handleMessage(message: ZMQMessage): void {
     if ("content" in message) {
-      return message.content;
+      this.content = message.content;
     }
   }
 
