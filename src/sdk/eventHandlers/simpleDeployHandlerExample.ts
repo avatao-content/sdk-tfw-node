@@ -10,7 +10,7 @@ export class ComplexCustomDeployHandler extends EventHandlerBase {
 
   handleMessage(message: ZMQMessage): void {
     let errorMessage = "";
-    // Do some tests after process restart...
+    // Do some tests here, the process won't restart
     const error = Math.random() < 0.5;
     if (error) {
       errorMessage = `${message.key} event has failed`;
