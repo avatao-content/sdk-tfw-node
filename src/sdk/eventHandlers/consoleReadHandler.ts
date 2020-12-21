@@ -10,7 +10,6 @@ export class ConsoleReadHandler extends EventHandlerBase {
   }
 
   handleMessage(message: ZMQMessage): void {
-    // Do some tests here, the process won't restart
     if ("content" in message) {
       return message.content;
     }
