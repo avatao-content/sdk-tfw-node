@@ -29,3 +29,5 @@ export type FrontendDashboardInput = {
   terminalMenuItem?: TerminalMenuItemName;
   enabledLayouts?: LayoutName[];
 };
+
+export type FsmTriggerOptions = { force: boolean };

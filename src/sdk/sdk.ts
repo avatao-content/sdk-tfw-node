@@ -4,6 +4,7 @@ import {
   DeployButtonText,
   LayoutName,
   ZMQMessage,
+  FsmTriggerOptions,
 } from "../types";
 import * as messageUtils from "./messages";
 import { EventHandlerBase } from "./eventHandlers/eventHandlerBase";
@@ -175,9 +176,12 @@ export class SDK {
     );
   }
 
-  async stepFsm(state: string | number, force = false): Promise<void> {
+  async stepFsm(
+    state: string | number,
+    options: FsmTriggerOptions,
+  ): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareStepFsmMessage(state, force),
+      messageUtils.prepareStepFsmMessage(state, options),
     );
   }
 
