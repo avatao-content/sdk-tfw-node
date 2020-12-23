@@ -109,57 +109,69 @@ export class SDK {
 
   async setAskReloadSite(needConfirmation: boolean): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareAskReloadSiteMessage(needConfirmation),
+      messageUtils.prepareFrontendSiteMessage({
+        needConfirmPrompt: needConfirmation,
+      }),
     );
   }
 
   async setDocumentTitle(title: string): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetDocumentTitleMessage(title),
+      messageUtils.prepareFrontendSiteMessage({ title: title }),
     );
   }
 
   async setEnabledLayouts(layouts: LayoutName[]): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetEnabledLayoutsMessage(layouts),
+      messageUtils.prepareFrontendDashboardMessage({ enabledLayouts: layouts }),
     );
   }
 
   async switchLayout(layout: LayoutName): Promise<void> {
-    this._connector.sendMessage(messageUtils.prepareSetLayoutMessage(layout));
+    this._connector.sendMessage(
+      messageUtils.prepareFrontendDashboardMessage({ layout: layout }),
+    );
   }
 
-  async setHideBotMessages(value: boolean): Promise<void> {
+  async setHideBotMessages(hideMessages: boolean): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareHideBotMessagesMessage(value),
+      messageUtils.prepareFrontendDashboardMessage({
+        hideMessages: hideMessages,
+      }),
     );
   }
 
   async setIframeUrl(url: string): Promise<void> {
-    this._connector.sendMessage(messageUtils.prepareSetIframeUrlMessage(url));
+    this._connector.sendMessage(
+      messageUtils.prepareFrontendDashboardMessage({ iframeUrl: url }),
+    );
   }
 
   async showIframeUrlBar(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareShowIframeUrlBarMessage(true),
+      messageUtils.prepareFrontendDashboardMessage({ showUrlBar: true }),
     );
   }
 
   async hideIframeUrlBar(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareShowIframeUrlBarMessage(false),
+      messageUtils.prepareFrontendDashboardMessage({ showUrlBar: false }),
     );
   }
 
   async switchToConsole(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetTerminalMenuItemMessage("console"),
+      messageUtils.prepareFrontendDashboardMessage({
+        terminalMenuItem: "console",
+      }),
     );
   }
 
   async switchToTerminal(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetTerminalMenuItemMessage("terminal"),
+      messageUtils.prepareFrontendDashboardMessage({
+        terminalMenuItem: "terminal",
+      }),
     );
   }
 
