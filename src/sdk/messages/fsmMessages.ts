@@ -1,12 +1,12 @@
-import { ZMQMessage } from "../../types";
+import { ZMQMessage, FsmTriggerOptions } from "../../types";
 
 export function prepareStepFsmMessage(
   state: string | number,
-  force = false,
+  options?: FsmTriggerOptions,
 ): ZMQMessage {
   return {
     key: "fsm.trigger",
-    transition: `${force ? "to_" : "step_"}${state.toString()}`,
+    transition: `${options?.force ? "to_" : "step_"}${state.toString()}`,
   };
 }
 
