@@ -1,11 +1,11 @@
 import {
   ZMQMessage,
   FrontendDashboardInput,
-  FrontendSiteInput,
+  FrontendSiteOptions,
 } from "../../types";
 
 export function prepareFrontendSiteMessage(
-  paramDict: FrontendSiteInput,
+  paramDict: FrontendSiteOptions,
 ): ZMQMessage {
   return {
     key: "frontend.site",

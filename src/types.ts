@@ -19,7 +19,10 @@ export type TerminalMenuItemName = "terminal" | "console";
 export type DeployButtonKeys = "TODEPLOY" | "DEPLOYED" | "DEPLOYING" | "FAILED";
 export type DeployButtonText = Record<DeployButtonKeys, string>;
 
-export type FrontendSiteInput = { title?: string; needConfirmPrompt?: boolean };
+export type FrontendSiteOptions = {
+  title?: string;
+  needConfirmPrompt?: boolean;
+};
 
 export type FrontendDashboardInput = {
   layout?: LayoutName;
