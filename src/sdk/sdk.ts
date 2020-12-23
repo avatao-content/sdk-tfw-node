@@ -191,25 +191,25 @@ export class SDK {
 
   async showDeployButton(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareShowDeploybuttonMessage(true),
+      messageUtils.prepareFrontendIdeMessage({ showDeployButton: true }),
     );
   }
 
   async hideDeploybutton(): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareShowDeploybuttonMessage(false),
+      messageUtils.prepareFrontendIdeMessage({ showDeployButton: false }),
     );
   }
 
   async setDeployButtonText(buttonTexts: DeployButtonText): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetDeployButtonTextMessage(buttonTexts),
+      messageUtils.prepareFrontendIdeMessage({ deployButtonText: buttonTexts }),
     );
   }
 
   async setAutoSaveInterval(interval: number): Promise<void> {
     this._connector.sendMessage(
-      messageUtils.prepareSetIdeAutoSaveIntervalMessage(interval),
+      messageUtils.prepareFrontendIdeMessage({ autoSaveInterval: interval }),
     );
   }
 

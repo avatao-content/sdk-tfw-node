@@ -34,3 +34,9 @@ export type FrontendDashboardInput = {
 };
 
 export type FsmTriggerOptions = { force: boolean };
+
+export type FrontendIdeOptions = {
+  autoSaveInterval?: number;
+  showDeployButton?: boolean;
+  deployButtonText?: DeployButtonText;
+};

@@ -1,29 +1,11 @@
-import { ZMQMessage, DeployButtonText } from "../../types";
+import { ZMQMessage, FrontendIdeOptions } from "../../types";
 
-export function prepareShowDeploybuttonMessage(
-  showButton: boolean,
+export function prepareFrontendIdeMessage(
+  paramDict: FrontendIdeOptions,
 ): ZMQMessage {
   return {
     key: "frontend.ide",
-    showDeployButton: showButton,
-  };
-}
-
-export function prepareSetDeployButtonTextMessage(
-  buttonTexts: DeployButtonText,
-): ZMQMessage {
-  return {
-    key: "frontend.ide",
-    deployButtonText: buttonTexts,
-  };
-}
-
-export function prepareSetIdeAutoSaveIntervalMessage(
-  interval: number,
-): ZMQMessage {
-  return {
-    key: "frontend.ide",
-    autoSaveInterval: interval,
+    ...paramDict,
   };
 }
 
